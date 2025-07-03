@@ -1,9 +1,12 @@
 package internal
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"time"
+
+	rssreader "github.com/RssReaderProject/RssReader"
 )
 
 // RegisterRoutes attaches all internal handlers to the provided mux.
@@ -26,20 +29,33 @@ func HandlePostRSSParse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Implement RSS parsing logic here
-	// For now, return a mock response
-	sampleTime := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
-	response := RSSResponse{
-		Items: []RSSItem{
-			{
-				Title:       "Sample RSS Item",
-				Source:      "Sample Source",
-				SourceURL:   "https://example.com",
-				Link:        "https://example.com/article",
-				PublishDate: &sampleTime,
-				Description: "This is a sample RSS item description",
-			},
-		},
+	// Create context with timeout for RSS parsing
+	ctx, cancel := context.WithTimeout(r.Context(), 60*time.Second)
+	defer cancel()
+
+	// Parse RSS feeds using the RssReader package
+	rssItems, err := rssreader.Parse(ctx, req.URLs)
+	if err != nil {
+		http.Error(w, "Error parsing RSS feeds: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Convert rssreader.RssItem to internal.RssServiceItem
+	items := make([]RssServiceItem, len(rssItems))
+	for i, item := range rssItems {
+		items[i] = RssServiceItem{
+			Title:       item.Title,
+			Source:      item.Source,
+			SourceURL:   item.SourceURL,
+			Link:        item.Link,
+			PublishDate: &item.PublishDate,
+			Description: item.Description,
+		}
+	}
+
+	// Create response
+	response := RSSServiceResponse{
+		Items: items,
 	}
 
 	// Set response headers
