@@ -180,6 +180,7 @@ func TestHandlePostRSSParse_ValidRSSFeed(t *testing.T) {
 		require.Equal(t, "http://example.com/article1", item.Link, "Expected correct link")
 		require.Equal(t, "This is the first test article description", item.Description, "Expected correct description")
 		require.NotNil(t, item.PublishDate, "Expected non-nil publish date")
+		require.Equal(t, item.RssURL, mockRSSServer.URL, "Expected correct rss_url")
 	}
 
 	// Assert that the second item has the expected structure and content
@@ -191,5 +192,54 @@ func TestHandlePostRSSParse_ValidRSSFeed(t *testing.T) {
 		require.Equal(t, "http://example.com/article2", item.Link, "Expected correct link")
 		require.Equal(t, "This is the second test article description", item.Description, "Expected correct description")
 		require.NotNil(t, item.PublishDate, "Expected non-nil publish date")
+		require.Equal(t, item.RssURL, mockRSSServer.URL, "Expected correct rss_url")
+	}
+}
+
+func TestHandlePostRSSParse_MultipleURLs_RssURLPresent(t *testing.T) {
+	// Setup two mock RSS servers
+	mockRSS1 := setupMockRSSServer()
+	defer mockRSS1.Close()
+	mockRSS2 := setupMockRSSServer()
+	defer mockRSS2.Close()
+
+	server := setupTestServer()
+	defer server.Close()
+
+	reqBody := RSSRequest{
+		URLs: []string{mockRSS1.URL, mockRSS2.URL},
+	}
+	jsonBody, err := json.Marshal(reqBody)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", server.URL+"/rss", bytes.NewBuffer(jsonBody))
+	require.NoError(t, err)
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	defer func() {
+		err := resp.Body.Close()
+		require.NoError(t, err)
+	}()
+
+	require.Equal(t, http.StatusOK, resp.StatusCode, "Expected 200 OK status")
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+
+	var response RSSServiceResponse
+	err = json.Unmarshal(bodyBytes, &response)
+	require.NoError(t, err)
+
+	// Should have 4 items (2 from each mock server)
+	require.Equal(t, 4, len(response.Items), "Expected 4 RSS items from two feeds")
+
+	// Check that each item's RssURL is either mockRSS1.URL or mockRSS2.URL
+	for _, item := range response.Items {
+		if item.RssURL != mockRSS1.URL && item.RssURL != mockRSS2.URL {
+			t.Errorf("Unexpected rss_url: %s", item.RssURL)
+		}
 	}
 }

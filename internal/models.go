@@ -20,4 +20,5 @@ type RssServiceItem struct {
 	Link        string     `json:"link"`
 	PublishDate *time.Time `json:"publish_date,omitempty,omitzero"`
 	Description string     `json:"description"`
+	RssURL      string     `json:"rss_url"`
 }
