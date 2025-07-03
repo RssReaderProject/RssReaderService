@@ -18,8 +18,8 @@ func main() {
 	// Create router and register handlers
 	mux := http.NewServeMux()
 
-	// Register RSS parsing endpoint
-	mux.HandleFunc("POST /rss", internal.HandlePostRSSParse)
+	// Register all internal routes
+	internal.RegisterRoutes(mux)
 
 	// Health check endpoint
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {

@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+// RegisterRoutes attaches all internal handlers to the provided mux.
+func RegisterRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("POST /rss", HandlePostRSSParse)
+}
+
 // HandlePostRSSParse handles RSS parsing requests
 func HandlePostRSSParse(w http.ResponseWriter, r *http.Request) {
 	// Parse request body
