@@ -6,6 +6,8 @@ github.com/RssReaderProject/RssReader v0.0.0-20250703112645-ef25955cdd9a h1:Ll7O
 github.com/RssReaderProject/RssReader v0.0.0-20250703112645-ef25955cdd9a/go.mod h1:UHpau5pAMPD1JGvnTdWEw8LaUp0eMY8StjV7mL07X2A=
 github.com/RssReaderProject/RssReader v0.0.0-20250703112851-c300183b94e2 h1:mYUr8gxd8h79p42DhYAiJeqYD9ncS+uguPAlPTYW6w4=
 github.com/RssReaderProject/RssReader v0.0.0-20250703112851-c300183b94e2/go.mod h1:UHpau5pAMPD1JGvnTdWEw8LaUp0eMY8StjV7mL07X2A=
+github.com/RssReaderProject/RssReader v0.0.0-20250703153934-92550694d155 h1:iqajMo8t6aEJWnFI4RkPkU+ILaadyKmnZ9m9VO4j0uQ=
+github.com/RssReaderProject/RssReader v0.0.0-20250703153934-92550694d155/go.mod h1:UHpau5pAMPD1JGvnTdWEw8LaUp0eMY8StjV7mL07X2A=
 github.com/andybalholm/cascadia v1.3.3 h1:AG2YHrzJIm4BZ19iwJ/DAua6Btl3IwJX+VI4kktS1LM=
 github.com/andybalholm/cascadia v1.3.3/go.mod h1:xNd9bqTn98Ln4DwST8/nG+H0yuB8Hmgu1YHNnWw0GeA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

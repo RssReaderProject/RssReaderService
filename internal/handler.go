@@ -50,6 +50,7 @@ func HandlePostRSSParse(w http.ResponseWriter, r *http.Request) {
 			Link:        item.Link,
 			PublishDate: &item.PublishDate,
 			Description: item.Description,
+			RssURL:      item.RssURL,
 		}
 	}
 
