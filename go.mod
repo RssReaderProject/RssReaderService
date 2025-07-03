@@ -3,7 +3,7 @@ module github.com/RssReaderProject/RssReaderService
 go 1.24.4
 
 require (
-	github.com/RssReaderProject/RssReader v0.0.0-20250701044911-63fe29cc47f5
+	github.com/RssReaderProject/RssReader v0.0.0-20250703112851-c300183b94e2
 	github.com/stretchr/testify v1.10.0
 )
 
