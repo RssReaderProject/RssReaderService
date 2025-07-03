@@ -18,6 +18,18 @@ A high-performance HTTP service for parsing and aggregating RSS feeds. Built wit
 - Go 1.24.4 or later
 - Git
 
+### Using Docker (Recommended)
+
+The service is available as a Docker image on GitHub Container Registry:
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/RssReaderProject/RssReaderService:latest
+
+# Run the container
+docker run -p 8080:8080 ghcr.io/RssReaderProject/RssReaderService:latest
+```
+
 ### Building from Source
 
 1. Clone the repository:
